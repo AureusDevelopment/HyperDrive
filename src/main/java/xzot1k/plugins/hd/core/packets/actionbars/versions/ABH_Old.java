@@ -4,6 +4,7 @@
 
 package xzot1k.plugins.hd.core.packets.actionbars.versions;
 
+import me.devtec.shared.Ref;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import xzot1k.plugins.hd.HyperDrive;
@@ -19,19 +20,19 @@ public class ABH_Old implements ActionBarHandler {
     public ABH_Old() {
         try {
             icbClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".IChatBaseComponent");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".IChatBaseComponent");
 
             csClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".IChatBaseComponent$ChatSerializer");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".IChatBaseComponent$ChatSerializer");
 
             packetClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".Packet");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".Packet");
 
             packetChatClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".PacketPlayOutChat");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".PacketPlayOutChat");
 
             craftPlayerClass = Class.forName("org.bukkit.craftbukkit."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".entity.CraftPlayer");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".entity.CraftPlayer");
         } catch (ClassNotFoundException e) {e.printStackTrace();}
     }
 

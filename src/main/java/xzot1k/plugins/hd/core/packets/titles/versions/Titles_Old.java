@@ -4,6 +4,7 @@
 
 package xzot1k.plugins.hd.core.packets.titles.versions;
 
+import me.devtec.shared.Ref;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import xzot1k.plugins.hd.HyperDrive;
@@ -20,22 +21,22 @@ public class Titles_Old implements TitleHandler {
     public Titles_Old() {
         try {
             cbcClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".IChatBaseComponent");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".IChatBaseComponent");
 
             csClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".IChatBaseComponent$ChatSerializer");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".IChatBaseComponent$ChatSerializer");
 
             packetClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".Packet");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".Packet");
 
             titlePacketClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".PacketPlayOutTitle");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".PacketPlayOutTitle");
 
             etaClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".PacketPlayOutTitle$EnumTitleAction");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".PacketPlayOutTitle$EnumTitleAction");
 
             cpClass = Class.forName("org.bukkit.craftbukkit."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".entity.CraftPlayer");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".entity.CraftPlayer");
         } catch (NoClassDefFoundError | ClassNotFoundException e) {
             e.printStackTrace();
         }

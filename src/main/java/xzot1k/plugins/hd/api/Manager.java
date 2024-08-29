@@ -6,6 +6,7 @@ package xzot1k.plugins.hd.api;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import me.devtec.shared.Ref;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -86,16 +87,16 @@ public class Manager {
     private void setupPackets() {
         long startTime = System.currentTimeMillis();
 
-        if (getPluginInstance().getServerVersion().startsWith("v1_12_")) {
+        if (Ref.isOlderThan(13)/* getPluginInstance().getServerVersion().startsWith("v1_12_")*/) {
             setParticleHandler(new PH_Old());
             setTitleHandler(new Titles_Latest(getPluginInstance()));
             setActionBarHandler(new ABH_Latest());
-        } else if (getPluginInstance().getServerVersion().startsWith("v1_11_") || getPluginInstance().getServerVersion().startsWith("v1_10_")
-                || getPluginInstance().getServerVersion().startsWith("v1_9_R1")) {
+        } else if (Ref.isNewerThan(8) && Ref.isOlderThan(12)/* getPluginInstance().getServerVersion().startsWith("v1_11_") || getPluginInstance().getServerVersion().startsWith("v1_10_")
+                || getPluginInstance().getServerVersion().startsWith("v1_9_R1")*/) {
             setParticleHandler(new PH_Old());
             setTitleHandler(new Titles_Old());
             setActionBarHandler(new ABH_Latest());
-        } else if (getPluginInstance().getServerVersion().startsWith("v1_8_") || getPluginInstance().getServerVersion().startsWith("v1_9_R2")) {
+        } else if (Ref.isNewerThan(7) && Ref.isOlderThan(10)/* getPluginInstance().getServerVersion().startsWith("v1_8_") || getPluginInstance().getServerVersion().startsWith("v1_9_R2")*/) {
             setParticleHandler(new PH_Old());
             setTitleHandler(new Titles_Old());
             setActionBarHandler(new ABH_Old());
@@ -105,7 +106,7 @@ public class Manager {
             setActionBarHandler(new ABH_Latest());
         }
 
-        getPluginInstance().log(Level.INFO, getPluginInstance().getServerVersion()
+        getPluginInstance().log(Level.INFO, Ref.serverVersion()/*getPluginInstance().getServerVersion()*/
                 + " packets were successfully setup! (Took " + (System.currentTimeMillis() - startTime) + "ms)");
     }
 
@@ -181,10 +182,10 @@ public class Manager {
     public String colorText(String message) {
         if (message == null || message.isEmpty()) return message;
 
-        if ((!getPluginInstance().getServerVersion().startsWith("v1_15_") && !getPluginInstance().getServerVersion().startsWith("v1_14_")
+        if (Ref.isNewerThan(15)/*(!getPluginInstance().getServerVersion().startsWith("v1_15_") && !getPluginInstance().getServerVersion().startsWith("v1_14_")
                 && !getPluginInstance().getServerVersion().startsWith("v1_13_") && !getPluginInstance().getServerVersion().startsWith("v1_12_")
                 && !getPluginInstance().getServerVersion().startsWith("v1_11_") && !getPluginInstance().getServerVersion().startsWith("v1_10_")
-                && !getPluginInstance().getServerVersion().startsWith("v1_9_") && !getPluginInstance().getServerVersion().startsWith("v1_8_"))) {
+                && !getPluginInstance().getServerVersion().startsWith("v1_9_") && !getPluginInstance().getServerVersion().startsWith("v1_8_"))*/) {
             try {
                 Matcher matcher = hexPatternOne.matcher(message);
                 while (matcher.find()) {
@@ -395,9 +396,9 @@ public class Manager {
 
     @SuppressWarnings("deprecation")
     public ItemStack getPlayerHead(String headId, String displayName, List<String> lore, int amount) {
-        final boolean isNew = !(getPluginInstance().getServerVersion().startsWith("v1_12_") || getPluginInstance().getServerVersion().startsWith("v1_11_")
+        final boolean isNew = Ref.isNewerThan(12)/*!(getPluginInstance().getServerVersion().startsWith("v1_12_") || getPluginInstance().getServerVersion().startsWith("v1_11_")
                 || getPluginInstance().getServerVersion().startsWith("v1_10_") || getPluginInstance().getServerVersion().startsWith("v1_9_")
-                || getPluginInstance().getServerVersion().startsWith("v1_8_"));
+                || getPluginInstance().getServerVersion().startsWith("v1_8_"))*/;
         ItemStack itemStack = null;
 
         if (headId != null && !headId.isEmpty()) {
@@ -474,7 +475,7 @@ public class Manager {
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
             if (skullMeta != null) {
                 OfflinePlayer player = getPluginInstance().getServer().getOfflinePlayer(headId);
-                if (isNew || getPluginInstance().getServerVersion().startsWith("v1_12_")) skullMeta.setOwningPlayer(player);
+                if (isNew || Ref.isOlderThan(13)/*getPluginInstance().getServerVersion().startsWith("v1_12_")*/) skullMeta.setOwningPlayer(player);
                 else skullMeta.setOwner(player.getName());
 
                 skullMeta.setDisplayName(displayName);
@@ -489,9 +490,9 @@ public class Manager {
 
     @SuppressWarnings("deprecation")
     public ItemStack getPlayerSelectionHead(OfflinePlayer player, boolean isSelected) {
-        final boolean isNew = !(getPluginInstance().getServerVersion().startsWith("v1_12_") || getPluginInstance().getServerVersion().startsWith("v1_11_")
+        final boolean isNew = Ref.isNewerThan(12)/*!(getPluginInstance().getServerVersion().startsWith("v1_12_") || getPluginInstance().getServerVersion().startsWith("v1_11_")
                 || getPluginInstance().getServerVersion().startsWith("v1_10_") || getPluginInstance().getServerVersion().startsWith("v1_9_")
-                || getPluginInstance().getServerVersion().startsWith("v1_8_"));
+                || getPluginInstance().getServerVersion().startsWith("v1_8_"))*/;
         ItemStack itemStack;
 
         if (isNew) {

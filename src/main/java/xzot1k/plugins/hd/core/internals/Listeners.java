@@ -7,6 +7,7 @@ package xzot1k.plugins.hd.core.internals;
 import com.ezylang.evalex.EvaluationException;
 import com.ezylang.evalex.Expression;
 import com.ezylang.evalex.parser.ParseException;
+import me.devtec.shared.Ref;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.*;
 import org.bukkit.block.Sign;
@@ -61,9 +62,9 @@ public class Listeners implements Listener {
 
         String inventoryName;
         try {
-            if (!(getPluginInstance().getServerVersion().startsWith("v1_13_") || getPluginInstance().getServerVersion().startsWith("v1_12_")
+            if (Ref.isNewerThan(13)/*!(getPluginInstance().getServerVersion().startsWith("v1_13_") || getPluginInstance().getServerVersion().startsWith("v1_12_")
                     || getPluginInstance().getServerVersion().startsWith("v1_11_") || getPluginInstance().getServerVersion().startsWith("v1_10_")
-                    || getPluginInstance().getServerVersion().startsWith("v1_9_") || getPluginInstance().getServerVersion().startsWith("v1_8_")))
+                    || getPluginInstance().getServerVersion().startsWith("v1_9_") || getPluginInstance().getServerVersion().startsWith("v1_8_"))*/)
                 inventoryName = e.getView().getTitle();
             else {
                 Method method = e.getInventory().getClass().getMethod("getName");

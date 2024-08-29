@@ -1,5 +1,6 @@
 package xzot1k.plugins.hd.core.packets.particles.versions;
 
+import me.devtec.shared.Ref;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -16,16 +17,16 @@ public class PH_Old implements ParticleHandler {
     public PH_Old() {
         try {
             packetClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".Packet");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".Packet");
 
             particlePacketClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".PacketPlayOutWorldParticles");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".PacketPlayOutWorldParticles");
 
             enumParticleClass = Class.forName("net.minecraft.server."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".EnumParticle");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".EnumParticle");
 
             cpClass = Class.forName("org.bukkit.craftbukkit."
-                    + HyperDrive.getPluginInstance().getServerVersion() + ".entity.CraftPlayer");
+                    + Ref.serverVersion()/*HyperDrive.getPluginInstance().getServerVersion()*/ + ".entity.CraftPlayer");
         } catch (NoClassDefFoundError | ClassNotFoundException e) {e.printStackTrace();}
     }
 

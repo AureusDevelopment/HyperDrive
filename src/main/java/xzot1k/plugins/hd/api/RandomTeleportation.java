@@ -5,6 +5,7 @@
 package xzot1k.plugins.hd.api;
 
 import io.papermc.lib.PaperLib;
+import me.devtec.shared.Ref;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -127,9 +128,9 @@ public class RandomTeleportation implements Runnable {
 
         if (xAddition >= boundsRadius || zAddition >= boundsRadius) return;
 
-        if (pluginInstance.getServerVersion().startsWith("v1_8_") || pluginInstance.getServerVersion().startsWith("v1_9_")
+        if (Ref.isNewerThan(7) &&Ref.isOlderThan(13)/*pluginInstance.getServerVersion().startsWith("v1_8_") || pluginInstance.getServerVersion().startsWith("v1_9_")
                 || pluginInstance.getServerVersion().startsWith("v1_10_") || pluginInstance.getServerVersion().startsWith("v1_11_")
-                || pluginInstance.getServerVersion().startsWith("v1_12_")) {
+                || pluginInstance.getServerVersion().startsWith("v1_12_")*/) {
             chunkCompleteFuture = PaperLib.getChunkAtAsync(world, x >> 16, z >> 16, true);
         } else {
             try {

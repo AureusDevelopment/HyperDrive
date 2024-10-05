@@ -818,7 +818,7 @@ public class HyperDrive extends JavaPlugin {
             warp.setCreationDate(creationDate);
             warp.setAnimationSet(resultSet.getString("animation_set"));
 
-            String theme = resultSet.getString("icon_theme").replace(":", ",");
+            String theme = resultSet.getString("icon_theme");
             if (theme.startsWith("item:")) {
                 YamlConfiguration config = new YamlConfiguration();
                 try {

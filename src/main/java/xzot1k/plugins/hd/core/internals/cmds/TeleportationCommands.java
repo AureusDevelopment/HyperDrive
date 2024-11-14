@@ -908,11 +908,34 @@ public class TeleportationCommands implements CommandExecutor {
             return;
         }
 
+
+        int waitTime = getPluginInstance().getConfig().getInt("teleportation-section.time-needed-to-teleport");
+        Player teleportedPlayer = getTpaHereSentPlayers().contains(enteredPlayer.getUniqueId())?player : enteredPlayer;
+        Location location = getTpaHereSentPlayers().contains(enteredPlayer.getUniqueId())?enteredPlayer.getLocation():player.getLocation();
         getTpaSentMap().remove(enteredPlayer.getUniqueId());
-        if (getTpaHereSentPlayers().contains(enteredPlayer.getUniqueId())) {
-            getTpaHereSentPlayers().remove(enteredPlayer.getUniqueId());
-            getPluginInstance().getTeleportationHandler().teleportPlayer(player, enteredPlayer.getLocation());
-        } else getPluginInstance().getTeleportationHandler().teleportPlayer(enteredPlayer, player.getLocation());
+        getTpaHereSentPlayers().remove(enteredPlayer.getUniqueId());
+
+        teleportWaitSet.add(teleportedPlayer.getUniqueId());
+        new BukkitRunnable(){
+            int taskWaitTime = waitTime;
+            @Override
+            public void run() {
+                if(!teleportWaitSet.contains(teleportedPlayer.getUniqueId())){
+                    cancel();
+                    return;
+                }
+                if(taskWaitTime==0||taskWaitTime<0){
+                    getPluginInstance().getTeleportationHandler().teleportPlayer(teleportedPlayer,location);
+                    cancel();
+                    teleportWaitSet.remove(teleportedPlayer.getUniqueId());
+                    return;
+                }
+                taskWaitTime--;
+                String actionMessage = getPluginInstance().getConfig().getString("teleportation-section.teleport-time-hotbar");
+                if (actionMessage != null && !actionMessage.isEmpty())
+                    getPluginInstance().getManager().sendActionBar(teleportedPlayer, actionMessage.replace("{time}", taskWaitTime + ""));
+            }
+        }.runTaskTimer(getPluginInstance(),20,20);
         getPluginInstance().getManager().updateCooldown(player, "tpa");
 
         if (!getPluginInstance().getManager().isVanished(player)) {
@@ -936,6 +959,8 @@ public class TeleportationCommands implements CommandExecutor {
         getPluginInstance().getManager().sendCustomMessage("player-tpa-accepted", enteredPlayer, "{player}:" + player.getName());
     }
 
+    public static HashSet<UUID> teleportWaitSet = new HashSet<>();
+
     private void runTeleportAskAccept(CommandSender commandSender) {
         if (!(commandSender instanceof Player)) {
             String message = getPluginInstance().getLangConfig().getString("must-be-player");
@@ -954,7 +979,6 @@ public class TeleportationCommands implements CommandExecutor {
             getPluginInstance().getManager().sendCustomMessage("self-teleportation-toggled", player);
             return;
         }
-
         Player foundPlayer = null;
         for (UUID senderId : getTpaSentMap().keySet()) {
             UUID requestedPlayer = getTpaSentMap().get(senderId);
@@ -979,15 +1003,36 @@ public class TeleportationCommands implements CommandExecutor {
                     return;
                 }
 
+                int waitTime = getPluginInstance().getConfig().getInt("teleportation-section.time-needed-to-teleport");
                 getTpaSentMap().remove(foundPlayer.getUniqueId());
-                if (getTpaHereSentPlayers().contains(foundPlayer.getUniqueId())) {
-                    getTpaHereSentPlayers().remove(foundPlayer.getUniqueId());
-                    getPluginInstance().getTeleportationHandler().teleportPlayer(player, foundPlayer.getLocation());
-                } else getPluginInstance().getTeleportationHandler().teleportPlayer(foundPlayer, player.getLocation());
-                getPluginInstance().getManager().updateCooldown(player, "tpa");
+                Player teleportedPlayer = getTpaHereSentPlayers().contains(foundPlayer.getUniqueId()) ? player : foundPlayer;
+                Location location = getTpaHereSentPlayers().contains(foundPlayer.getUniqueId())? foundPlayer.getLocation() : player.getLocation();
+                getTpaHereSentPlayers().remove(foundPlayer.getUniqueId());
+                teleportWaitSet.add(teleportedPlayer.getUniqueId());
+                new BukkitRunnable() {
+                    int taskWaitTime = waitTime;
+                    @Override
+                    public void run() {
+                        if(!teleportWaitSet.contains(teleportedPlayer.getUniqueId())){
+                            cancel();
+                            return;
+                        }
+                        if(taskWaitTime==0||taskWaitTime<0){
+                            getPluginInstance().getTeleportationHandler().teleportPlayer(teleportedPlayer,location);
+                            cancel();
+                            teleportWaitSet.remove(teleportedPlayer.getUniqueId());
+                            return;
+                        }
+                        taskWaitTime--;
+                        String actionMessage = getPluginInstance().getConfig().getString("teleportation-section.teleport-time-hotbar");
+                        if (actionMessage != null && !actionMessage.isEmpty())
+                            getPluginInstance().getManager().sendActionBar(teleportedPlayer,actionMessage.replace("{time}",taskWaitTime+""));
+                    }
+                }.runTaskTimer(getPluginInstance(),20, 20);
                 break;
             }
         }
+        getPluginInstance().getManager().updateCooldown(player, "tpa");
 
         if (foundPlayer == null) {
             getPluginInstance().getManager().sendCustomMessage("player-tpa-invalid", player);

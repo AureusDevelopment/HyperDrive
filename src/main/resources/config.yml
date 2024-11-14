@@ -140,6 +140,10 @@ teleportation-section:
   start-bar-message: "&eTeleportation to the warp &a{warp} &ewill engage in &a{duration} &eseconds."
   # This is the message display on the player's action bar when a teleportation process has completed (Set to "" to disable).
   teleport-bar-message: "&eYou have been teleported to the warp &a{warp}&e."
+  #Time required for the player to wait before they're teleported to the other player
+  time-needed-to-teleport: 0
+  teleport-time-hotbar: "&aYou will be teleported in &e{time}"
+
 
 # Here is where everything related to random teleportation can be customize.
 random-teleport-section:

@@ -38,6 +38,7 @@ import xzot1k.plugins.hd.api.events.MenuOpenEvent;
 import xzot1k.plugins.hd.api.events.RandomTeleportEvent;
 import xzot1k.plugins.hd.api.events.WarpEvent;
 import xzot1k.plugins.hd.api.objects.Warp;
+import xzot1k.plugins.hd.core.internals.cmds.TeleportationCommands;
 import xzot1k.plugins.hd.core.internals.hooks.HookChecker;
 import xzot1k.plugins.hd.core.objects.Destination;
 import xzot1k.plugins.hd.core.objects.GroupTemp;
@@ -562,6 +563,11 @@ public class Listeners implements Listener {
                 if (getPluginInstance().getTeleportationHandler().isTeleporting(e.getPlayer()) && getPluginInstance().getTeleportationHandler().getRemainingTime(e.getPlayer()) > 0) {
                     RandomTeleportation.clearRTPInstance(e.getPlayer().getUniqueId());
                     getPluginInstance().getTeleportationHandler().removeTeleportTemp(e.getPlayer());
+                    getPluginInstance().getTeleportationHandler().getAnimation().stopActiveAnimation(e.getPlayer());
+                    getPluginInstance().getManager().sendCustomMessage("teleportation-cancelled", e.getPlayer());
+                }
+                if(TeleportationCommands.teleportWaitSet.contains(e.getPlayer().getUniqueId())){
+                    TeleportationCommands.teleportWaitSet.remove(e.getPlayer().getUniqueId());
                     getPluginInstance().getTeleportationHandler().getAnimation().stopActiveAnimation(e.getPlayer());
                     getPluginInstance().getManager().sendCustomMessage("teleportation-cancelled", e.getPlayer());
                 }
